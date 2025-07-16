@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Network Notifier</string>
+    <string name="mobileDataActiveNotification_Title">Mobile data is active</string>
+    <string name="mobileDataActiveNotification_Text">Your device is currently using mobile data.</string>
+</resources>
