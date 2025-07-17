@@ -62,9 +62,7 @@ class NetworkMonitoringService : Service() {
         Log.d(TAG, "Creating notification channels")
         // On Android SDK versions >= Android 8.0 (Oreo), notification channels must be created and registered, and notifications posted to them.
         // The app will crash if this is not done.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannels()
-        }
+        createNotificationChannels()
 
         Log.d(TAG, "startForeground()")
         startForeground()
@@ -72,7 +70,6 @@ class NetworkMonitoringService : Service() {
         return START_STICKY
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannels() {
         // Create notification channel for service notification
         val persistentServiceNotificationChannel = NotificationChannel(
@@ -83,7 +80,7 @@ class NetworkMonitoringService : Service() {
 
         // Create notification channel for "mobile data in use" alert notification
         val mobileDataActiveNotificationChannel = NotificationChannel(
-            mobileDataActiveNotificationChannelConfig.name,
+            mobileDataActiveNotificationChannelConfig.id,
             mobileDataActiveNotificationChannelConfig.name,
             NotificationManager.IMPORTANCE_HIGH
         )
