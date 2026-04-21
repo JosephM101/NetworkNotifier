@@ -83,7 +83,9 @@ class NetworkMonitoringService : Service() {
             mobileDataActiveNotificationChannelConfig.id,
             mobileDataActiveNotificationChannelConfig.name,
             NotificationManager.IMPORTANCE_HIGH
-        )
+        ).apply {
+            description = "Mobile data is in use"
+        }
         mobileDataActiveNotificationChannel.enableVibration(true)
 
         // Register notification channels
