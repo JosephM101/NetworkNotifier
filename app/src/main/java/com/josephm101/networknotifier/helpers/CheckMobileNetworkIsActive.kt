@@ -1,4 +1,4 @@
-package com.josephm101.networknotifier
+package com.josephm101.networknotifier.helpers
 
 import android.content.Context
 import android.net.ConnectivityManager

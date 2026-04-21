@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //id("com.google.devtools.ksp").version("1.9.0-1.0.11") // Or latest version of KSP
 }
 
 android {
@@ -41,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,4 +59,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.preference)
+    /*
+    implementation(libs.krate)
+    implementation(libs.krate.moshi.codegen)
+    implementation(libs.krate.kotlinx)
+    implementation(libs.krate.gson)
+    implementation(libs.moshi)
+    ksp(libs.moshi.kotlin.codegen)
+     */
+    implementation("hu.autsoft:krate:2.0.0")
 }

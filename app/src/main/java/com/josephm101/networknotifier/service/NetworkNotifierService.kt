@@ -1,19 +1,18 @@
-package com.josephm101.networknotifier
+package com.josephm101.networknotifier.service
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.josephm101.networknotifier.R
+import com.josephm101.networknotifier.helpers.checkMobileNetworkIsActive
 
-class NetworkMonitoringService : Service() {
+class NetworkNotifierService : Service() {
     private val TAG = "NetworkMonitoringService"
 
     lateinit var connectivityManager: ConnectivityManager
@@ -65,7 +64,23 @@ class NetworkMonitoringService : Service() {
         createNotificationChannels()
 
         Log.d(TAG, "startForeground()")
-        startForeground()
+        //startForeground()
+
+        val serviceNotification = NotificationCompat.Builder(
+            this,
+            serviceNotificationChannelConfig.id
+        )
+            .setSmallIcon(R.drawable.baseline_network_check_24)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setOngoing(true)
+            .build()
+
+        //serviceNotification.flags = serviceNotification.flags or Notification.FLAG_FOREGROUND_SERVICE
+        //serviceNotification.flags = serviceNotification.flags or Notification.FLAG_NO_CLEAR
+        //serviceNotification.flags = serviceNotification.flags or Notification.FLAG_ONGOING_EVENT
+        startForeground(100, serviceNotification)
+        Log.d(TAG, "NetworkNotifier service started")
 
         return START_STICKY
     }
@@ -93,34 +108,6 @@ class NetworkMonitoringService : Service() {
             getSystemService(NotificationManager::class.java) as NotificationManager
         notificationManager.createNotificationChannel(persistentServiceNotificationChannel)
         notificationManager.createNotificationChannel(mobileDataActiveNotificationChannel)
-    }
-
-
-    // This function is intended for older versions of Android
-    private fun startForeground() {
-        val notification = NotificationCompat.Builder(applicationContext, serviceNotificationChannelConfig.id)
-            .setPriority(NotificationManager.IMPORTANCE_HIGH)
-            .build()
-        notification.flags = notification.flags or Notification.FLAG_FOREGROUND_SERVICE
-        notification.flags = notification.flags or Notification.FLAG_NO_CLEAR
-        notification.flags = notification.flags or Notification.FLAG_ONGOING_EVENT
-        startForeground(100, notification)
-        Log.d(TAG, "Network monitoring foreground service started")
-
-/*
-        try {
-
-        } catch (e: Exception) {
-            Log.e(TAG, "Foreground service failed to start.")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                && e is ForegroundServiceStartNotAllowedException
-            ) {
-                // App not in a valid state to start foreground service
-                // (e.g. started from bg)
-                Log.e(TAG, "Foreground service failed to start.")
-            }
-        }
- */
     }
 
     fun cancelNotification(notification: NotificationConfig) {
