@@ -1,5 +1,6 @@
 package com.josephm101.networknotifier.service
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -70,15 +71,17 @@ class NetworkNotifierService : Service() {
             this,
             serviceNotificationChannelConfig.id
         )
-            .setSmallIcon(R.drawable.baseline_network_check_24)
+            .setSmallIcon(R.drawable.outline_wifi_notification_24)
+            .setContentTitle("Network Notifier service is running")
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setOngoing(true)
             .build()
 
-        //serviceNotification.flags = serviceNotification.flags or Notification.FLAG_FOREGROUND_SERVICE
-        //serviceNotification.flags = serviceNotification.flags or Notification.FLAG_NO_CLEAR
-        //serviceNotification.flags = serviceNotification.flags or Notification.FLAG_ONGOING_EVENT
+        serviceNotification.flags = serviceNotification.flags or Notification.FLAG_FOREGROUND_SERVICE
+        serviceNotification.flags = serviceNotification.flags or Notification.FLAG_NO_CLEAR
+        serviceNotification.flags = serviceNotification.flags or Notification.FLAG_ONGOING_EVENT
+
         startForeground(100, serviceNotification)
         Log.d(TAG, "NetworkNotifier service started")
 

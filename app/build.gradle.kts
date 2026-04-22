@@ -15,7 +15,7 @@ android {
         //noinspection ExpiredTargetSdkVersion
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -60,13 +60,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.preference)
-    /*
-    implementation(libs.krate)
-    implementation(libs.krate.moshi.codegen)
-    implementation(libs.krate.kotlinx)
-    implementation(libs.krate.gson)
-    implementation(libs.moshi)
-    ksp(libs.moshi.kotlin.codegen)
-     */
     implementation("hu.autsoft:krate:2.0.0")
 }
