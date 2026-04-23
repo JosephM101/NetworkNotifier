@@ -11,4 +11,4 @@ Normally I turn off cellular data when I'm home since it is unnecessary (and I h
 
 ## Premise
 This app is simple. You install it, grant the required permissions, and it will run continuously in the background. 
-When your device automatically switches to a mobile data connection, a notification will be sent alerting you to the change. It may seem a bit like a gimmick, but trust me when I say it's saved my mobile plan these past couple of months. **That's not hyperbole.**
+When your device automatically switches to a mobile data connection, a notification will be sent alerting you to the change.
