@@ -11,27 +11,29 @@ import com.josephm101.networknotifier.notifications.AppNotificationChannels
 import com.josephm101.networknotifier.notifications.AppNotifications
 
 class NetworkNotifierService : Service() {
-    private val LogTag = "NetworkNotifierService"
+    private val logTag = "NetworkNotifierService"
 
     lateinit var connectivityManager: ConnectivityManager
 
-    val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            Log.d(LogTag,"networkCallback: onAvailable")
-            val mobileNetworkIsActive = checkMobileNetworkIsActive(applicationContext)
-            if (mobileNetworkIsActive) {
-                Log.d(LogTag,"Mobile network is active")
-                AppNotifications.MobileDataActiveNotification.post(applicationContext)
-            } else {
-                Log.d(LogTag,"Mobile network is not connected/active")
+    val networkCallback: ConnectivityManager.NetworkCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                Log.d(logTag, "networkCallback: onAvailable")
+                val mobileNetworkIsActive = checkMobileNetworkIsActive(applicationContext)
+                if (mobileNetworkIsActive) {
+                    Log.d(logTag, "Mobile network is active")
+                    AppNotifications.MobileDataActiveNotification.post(applicationContext)
+                } else {
+                    Log.d(logTag, "Mobile network is not connected/active")
+                    AppNotifications.MobileDataActiveNotification.cancel(applicationContext)
+                }
+            }
+
+            override fun onLost(network: Network) {
+                Log.d(logTag, "onLost")
                 AppNotifications.MobileDataActiveNotification.cancel(applicationContext)
             }
         }
-        override fun onLost(network: Network) {
-            Log.d(LogTag,"onLost")
-            AppNotifications.MobileDataActiveNotification.cancel(applicationContext)
-        }
-    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -45,16 +47,19 @@ class NetworkNotifierService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(LogTag, "Creating notification channels")
+        Log.d(logTag, "Creating notification channels")
         // On Android SDK versions >= Android 8.0 (Oreo), notification channels must be created and registered, and notifications posted to them.
         // The app will crash if this is not done.
         AppNotificationChannels.createNotificationChannels(applicationContext)
 
-        Log.d(LogTag, "startForeground()")
+        Log.d(logTag, "startForeground()")
         //startForeground()
 
-        startForeground(AppNotifications.PersistentServiceNotification.notificationId, AppNotifications.PersistentServiceNotification.asNotification(applicationContext))
-        Log.d(LogTag, "NetworkNotifier service started")
+        startForeground(
+            AppNotifications.PersistentServiceNotification.notificationId,
+            AppNotifications.PersistentServiceNotification.asNotification(applicationContext)
+        )
+        Log.d(logTag, "NetworkNotifier service started")
 
         return START_STICKY
     }
@@ -87,7 +92,7 @@ class NetworkNotifierService : Service() {
      */
 
     override fun onDestroy() {
-        Log.d(LogTag, "Destroying")
+        Log.d(logTag, "Destroying")
 
         // Our service is going down; unregister the callback to prevent memory leaks
         connectivityManager.unregisterNetworkCallback(networkCallback)
