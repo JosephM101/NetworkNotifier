@@ -1,20 +1,25 @@
 <resources>
     <string name="app_name">Network Notifier</string>
-    <string name="mobileDataActiveNotification_Title">Mobile data is active</string>
-    <string name="mobileDataActiveNotification_Text">Your device is currently using mobile data.</string>
+
+    <string name="mobileDataActiveNotification_title">Mobile data is active</string>
+    <string name="mobileDataActiveNotification_text">Your device is currently using mobile data.</string>
+    <string name="notificationChannel_service_description">Send notifications when your device switches to a mobile data connection</string>
+
+    <string name="notificationChannel_persistentService_title">Persistent Service Notification</string>
+    <string name="mobile_data_active">Mobile data active</string>
 
     <string name="ui_footer_appVersionString" translatable="false">version %1$s (%2$s)</string>
 
     <string name="ui_batteryOptimizationsCard_title">Battery Optimization</string>
-    <string name="ui_batteryOptimizationsCard_description">For Network Notifier to function properly, you need to allow it to ignore Android\'s battery optimizations.\n\nIf you don\'t grant this permission, notifications may be delivered late and the service may stop working randomly.</string>
+    <string name="ui_batteryOptimizationsCard_description">For Network Notifier to function properly, you need to allow it to ignore Android\'s battery optimizations.\n\nIf you don\'t grant this permission, notifications may be delivered late and the service will likely stop working.</string>
     <string name="ui_batteryOptimizationsCard_disableBatteryOptimizations_button_text">Disable Battery Optimization</string>
 
     <string name="ui_notificationPermissionsRequired_dialogBody">On Android 13 and later, notification permissions must be granted for apps to post notifications. The app\'s service will not start until these permissions are granted.\n\nIf the \"Request Permissions\" button does not work, tap the button below it and manually enable notification permissions for Network Notifier in Settings.</string>
     <string name="ui_notificationPermissionsRequired_dialogTitle">Notification permissions required</string>
-
-    <string name="request_permissions">Request Permissions</string>
     <string name="ui_notificationPermissionsRationale_dialogBody">Notification permissions are required for Network Notifier to function properly in the background and deliver notifications. Please allow these permissions in Settings.</string>
     <string name="ui_notificationPermissionsRationale_dialogTitle">Notification Permission</string>
+
+    <string name="request_permissions">Request Permissions</string>
     <string name="open_android_settings_for_this_app">Open Android Settings for this app</string>
     <string name="open_settings">Open Settings</string>
     <string name="cancel">Cancel</string>

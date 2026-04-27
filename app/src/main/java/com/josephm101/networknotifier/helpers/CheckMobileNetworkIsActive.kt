@@ -18,7 +18,8 @@ fun checkMobileNetworkIsActive(context: Context): Boolean {
     val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
     return when {
-        // Check if the current network's transport is over mobile data/cellular
+        // Check if the current network connection is over mobile data/cellular
+        // (will be true even if phone is connected to Wi-Fi but is actively using mobile data as transport, such as when the Wi-Fi connection is "unstable" or "weak")
         activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
         else -> false
     }

@@ -1,35 +1,23 @@
 package com.josephm101.networknotifier
 
-import android.content.Context
-import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
 import android.provider.Settings
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -38,18 +26,29 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -301,9 +300,14 @@ class MainActivity : ComponentActivity() {
                             TextButton(
                                 onClick = {
                                     showRationaleDialog.value = false
-                                    val intent =
-                                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                    intent.data = "package:$packageName".toUri()
+                                    val intent = Intent("android.settings.APP_NOTIFICATION_SETTINGS")
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
+
+                                    //val intent =
+                                    //    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    //intent.data = "package:$packageName".toUri()
+
                                     startActivity(intent)
                                 },
                             ) {
@@ -351,6 +355,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun ServiceEnabledCard() {
+        /// TODO: If switch is turned off, stop the service if it is running.
         val status = remember { mutableStateOf(appPreferences.serviceEnabled) }
         SwitchCard(
             title = "Enable Service",
@@ -391,20 +396,20 @@ class MainActivity : ComponentActivity() {
                     Text(
                         text = "Disable Battery Optimization",
                         modifier = Modifier
-                            .basicMarquee(velocity = 50.dp) // I need the text to scroll, because the message I put in the button won't fit. Plus, it's a kinda fun effect :)
+                            .basicMarquee(velocity = 50.dp)
                     )
                 }
             }
         }
 
-        // Set up a loop to check the status of the permission
+        // Set up a loop to periodically check the status of the permission
         val loopDuration: Long = 500 // ms
         val batteryOptimizationGrantedTimerCheck = object : Runnable {
             override fun run() {
                 if (permissionToIgnoreBatteryOptimizationsIsGranted()) {
                     hidden.value = true
                 } else {
-                    // Restart the timer
+                    // If permissions haven't been granted yet, start the timer again
                     loopHandler.postDelayed(this, loopDuration)
                 }
             }
@@ -429,42 +434,3 @@ class MainActivity : ComponentActivity() {
         return powerManager.isIgnoringBatteryOptimizations(packageName)
     }
 }
-
-/*
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun NotificationPermissionView(context: Context, notificationPermissionState: PermissionState) {
-    LaunchedEffect(Unit) {
-        notificationPermissionState.launchPermissionRequest()
-    }
-    Box(Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)) {
-        Column(Modifier.padding(vertical = 120.dp, horizontal = 16.dp)) {
-            Icon(
-                Icons.Rounded.Notifications,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground)
-            Spacer(Modifier.height(8.dp))
-            Text("Notification permission required", style = MaterialTheme.typography.bodyLarge)
-            Spacer(Modifier.height(4.dp))
-            Text("This is required in order for Network Notifier to send you alerts.")
-        }
-        val context = LocalContext.current
-        Button(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(16.dp),
-            onClick = {
-                val intent =
-                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.fromParts("package", context.packageName, null)
-                    }
-                context.startActivity(intent)
-            }) {
-            Text("Go to settings")
-        }
-    }
-}
- */
